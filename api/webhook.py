@@ -61,13 +61,7 @@ def add_pr_comment(workspace, repo_slug, pr_id, comment):
         watchers = requests.get(watchers_url, headers=headers)
         watchers.raise_for_status()
         logger.info(watchers.json())
-        watchers_data = watchers.json()
-        for watcher in watchers_data:
-            logger.info(watcher)
-            if watcher["user"]["username"] == "codeRabbit":
-                logger.info(f"codeRabbit is already a watcher of {workspace}/{repo_slug}")
-                return True
-                
+       
         res = requests.post(
             url,
             headers=headers,
