@@ -57,18 +57,12 @@ def add_pr_comment(workspace, repo_slug, pr_id, comment):
         "Content-Type": "application/json"
     }
     try:
-        watchers_url = f"{BITBUCKET_API_URL}/repositories/{workspace}/{repo_slug}/watchers"
-        watchers = requests.get(watchers_url, headers=headers)
-        watchers.raise_for_status()
-        logger.info(watchers.json())
-       
         res = requests.post(
             url,
             headers=headers,
             json={
                 "content": {
-                    "raw": "@codeRabbit full review {comment}",
-                    "markup": "markdown"
+                    "raw": f"@codeRabbit full review {comment}",
                 }
             },
             timeout=10
