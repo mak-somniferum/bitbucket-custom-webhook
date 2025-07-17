@@ -1,3 +1,4 @@
-Flask==2.0.1
-Werkzeug==2.0.1
-pync==1.6.1; platform_system == "Darwin"
+flask
+pync; platform_system == "Darwin"
+requests
+python-dotenv
