@@ -51,13 +51,23 @@ def add_pr_comment(workspace, repo_slug, pr_id, comment):
         logger.error("Bitbucket authentication credentials not found")
         return False
 
-    logger.info(f"{BITBUCKET_API_URL}repositories/{workspace}/{repo_slug}/watchers")
     url = f"{BITBUCKET_API_URL}/repositories/{workspace}/{repo_slug}/pullrequests/{pr_id}/comments"
     headers = {
         "Authorization": build_basic_auth_header(BITBUCKET_USERNAME, BITBUCKET_APP_PASSWORD),
         "Content-Type": "application/json"
     }
     try:
+        watchers_url = f"{BITBUCKET_API_URL}/repositories/{workspace}/{repo_slug}/watchers"
+        watchers = requests.get(watchers_url, headers=headers)
+        watchers.raise_for_status()
+        logger.info(watchers.json())
+        watchers_data = watchers.json()
+        for watcher in watchers_data:
+            logger.info(watcher)
+            if watcher["user"]["username"] == "codeRabbit":
+                logger.info(f"codeRabbit is already a watcher of {workspace}/{repo_slug}")
+                return True
+                
         res = requests.post(
             url,
             headers=headers,
