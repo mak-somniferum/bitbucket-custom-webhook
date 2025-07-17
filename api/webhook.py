@@ -31,7 +31,7 @@ USER_MESSAGES = {
 
 # PR 코멘트 설정
 PR_COMMENTS = {
-    "default": "@codeRabbit full review",
+    "default": "@{712020:b486d9e0-cb42-427e-be16-9cdb6284476a} full review",
 }
 
 BITBUCKET_USERNAME = os.getenv("BITBUCKET_USERNAME")        # .env에 추가
@@ -62,7 +62,7 @@ def add_pr_comment(workspace, repo_slug, pr_id, comment):
             headers=headers,
             json={
                 "content": {
-                    "raw": "@{712020:b486d9e0-cb42-427e-be16-9cdb6284476a} full review {comment}",
+                    "raw": comment,
                 }
             },
             timeout=10
