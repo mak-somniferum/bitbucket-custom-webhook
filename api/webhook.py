@@ -23,7 +23,7 @@ BITBUCKET_AUTH_TOKEN = os.environ.get("BITBUCKET_AUTH_TOKEN")  # Bitbucket App P
 
 # 사용자별 맞춤 메시지 설정
 USER_MESSAGES = {
-    "서진": "열심히 코딩하시네요! 👍",
+    "suhjin700": "열심히 코딩하시네요! 👍",
     # "user2": "오늘도 좋은 코드 감사합니다! 🎉",
     # 더 많은 사용자와 메시지를 추가할 수 있습니다
 }
@@ -31,7 +31,7 @@ USER_MESSAGES = {
 # PR 코멘트 설정
 PR_COMMENTS = {
     "default": "PR 검토 부탁드립니다! 🙏",
-    "서진": "코드 리뷰 시작하겠습니다. 👀"
+    "suhjin700": "코드 리뷰 시작하겠습니다. 👀"
 }
 
 def add_pr_comment(workspace, repo_slug, pr_id, comment):
