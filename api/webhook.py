@@ -31,8 +31,7 @@ USER_MESSAGES = {
 
 # PR 코멘트 설정
 PR_COMMENTS = {
-    "default": "PR 검토 부탁드립니다! 🙏",
-    "서진": "코드 리뷰 시작하겠습니다. 👀"
+    "default": "@CodeRabbit full review",
 }
 
 BITBUCKET_USERNAME = os.getenv("BITBUCKET_USERNAME")        # .env에 추가
@@ -103,7 +102,8 @@ def webhook():
                 repo_slug = repo_info.get("name", "")
             
             # PR 작성자에 따른 맞춤 코멘트 선택
-            comment = PR_COMMENTS.get(pr_author, PR_COMMENTS["default"])
+            # PR 작성자와 무관하게 고정 메시지 사용
+            comment = PR_COMMENTS["default"]
             
             # PR에 코멘트 추가
             if add_pr_comment(workspace, repo_slug, pr_id, comment):
