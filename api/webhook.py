@@ -31,7 +31,7 @@ USER_MESSAGES = {
 
 # PR 코멘트 설정
 PR_COMMENTS = {
-    "default": "@CodeRabbit full review",
+    "default": "@coderabbitbot full review",
 }
 
 BITBUCKET_USERNAME = os.getenv("BITBUCKET_USERNAME")        # .env에 추가
