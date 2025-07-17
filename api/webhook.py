@@ -67,16 +67,24 @@ def webhook():
             
         logger.info(f"Webhook data received: {data}")
         
+        # 헤더에서 이벤트 타입 확인
+        event_key = request.headers.get("X-Event-Key", "")
+        logger.info(f"Event key: {event_key}")
+
         # PR 생성 이벤트 처리
-        if data.get("pullrequest") and data.get("event") == "pullrequest:created":
+        if event_key == "pullrequest:created" and data.get("pullrequest"):
             pr_data = data["pullrequest"]
             pr_id = pr_data.get("id")
             pr_author = pr_data.get("author", {}).get("username", "unknown")
             
             # 저장소 정보 추출
-            repository = pr_data.get("destination", {}).get("repository", {})
-            workspace = repository.get("workspace", {}).get("slug")
-            repo_slug = repository.get("slug")
+            repo_info = data.get("repository", {})
+            full_name = repo_info.get("full_name", "")
+            if "/" in full_name:
+                workspace, repo_slug = full_name.split("/", 1)
+            else:
+                workspace = repo_info.get("owner", {}).get("username", "")
+                repo_slug = repo_info.get("name", "")
             
             # PR 작성자에 따른 맞춤 코멘트 선택
             comment = PR_COMMENTS.get(pr_author, PR_COMMENTS["default"])
