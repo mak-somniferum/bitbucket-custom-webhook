@@ -43,7 +43,7 @@ def add_pr_comment(workspace, repo_slug, pr_id, comment):
 
     url = f"{BITBUCKET_API_URL}/repositories/{workspace}/{repo_slug}/pullrequests/{pr_id}/comments"
     headers = {
-        "Authorization": f"Bearer {BITBUCKET_AUTH_TOKEN}",
+        "Authorization": f"Basic {BITBUCKET_AUTH_TOKEN}",
         "Content-Type": "application/json"
     }
     
