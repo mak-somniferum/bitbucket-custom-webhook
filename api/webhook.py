@@ -32,7 +32,7 @@ USER_MESSAGES = {
 # PR 코멘트 설정
 PR_COMMENTS = {
     "default": "PR 검토 부탁드립니다! 🙏",
-    "suhjin700": "코드 리뷰 시작하겠습니다. 👀"
+    "서진": "코드 리뷰 시작하겠습니다. 👀"
 }
 
 BITBUCKET_USERNAME = os.getenv("BITBUCKET_USERNAME")        # .env에 추가
@@ -47,8 +47,7 @@ def build_basic_auth_header(username: str, password: str) -> str:
 
 
 def add_pr_comment(workspace, repo_slug, pr_id, comment):
-    """PR에 코멘트를 추가하는 함수"""
-    logger.info(f"Env BITBUCKET_APP_PASSWORD exists? {bool(os.getenv('BITBUCKET_APP_PASSWORD'))}")
+    """PR에 코멘트를 추가하는 함수"""   
     if not (BITBUCKET_USERNAME and BITBUCKET_APP_PASSWORD):
         logger.error("Bitbucket authentication credentials not found")
         return False
