@@ -36,6 +36,7 @@ PR_COMMENTS = {
 
 def add_pr_comment(workspace, repo_slug, pr_id, comment):
     """PR에 코멘트를 추가하는 함수"""
+    logger.info(f"Env BITBUCKET_AUTH_TOKEN exists? {bool(os.getenv('BITBUCKET_AUTH_TOKEN'))}")
     if not BITBUCKET_AUTH_TOKEN:
         logger.error("Bitbucket authentication token not found")
         return False
