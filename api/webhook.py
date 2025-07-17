@@ -60,7 +60,11 @@ def add_pr_comment(workspace, repo_slug, pr_id, comment):
         res = requests.post(
             url,
             headers=headers,
-            json={"content": {"raw": comment, "markup": "markdown"}},
+            json={
+                "content": {
+                    "raw": comment
+                }
+            },
             timeout=10
         )
         res.raise_for_status()
