@@ -51,6 +51,7 @@ def add_pr_comment(workspace, repo_slug, pr_id, comment):
         logger.error("Bitbucket authentication credentials not found")
         return False
 
+    logger.info(f"{BITBUCKET_API_URL}repositories/{workspace}/{repo_slug}/watchers")
     url = f"{BITBUCKET_API_URL}/repositories/{workspace}/{repo_slug}/pullrequests/{pr_id}/comments"
     headers = {
         "Authorization": build_basic_auth_header(BITBUCKET_USERNAME, BITBUCKET_APP_PASSWORD),
@@ -69,8 +70,16 @@ def add_pr_comment(workspace, repo_slug, pr_id, comment):
         )
         res.raise_for_status()
         return True
-    except Exception as e:
-        logger.error(f"Error adding PR comment: {e}")
+    except requests.exceptions.RequestException as e:
+        # Bitbucket가 반환한 상세 에러 메시지까지 로그로 남긴다.
+        if e.response is not None:
+            logger.error(
+                "Error adding PR comment: %s | Response: %s",
+                e,
+                e.response.text
+            )
+        else:
+            logger.error(f"Error adding PR comment: {e}")
         return False
 
 @app.route("/webhook", methods=["POST"])
