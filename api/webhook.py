@@ -4,6 +4,7 @@ from sys import platform as _platform
 import logging
 import requests
 from dotenv import load_dotenv
+import base64
 
 # .env 파일 로드
 load_dotenv()
@@ -37,18 +38,30 @@ PR_COMMENTS = {
 BITBUCKET_USERNAME = os.getenv("BITBUCKET_USERNAME")        # .env에 추가
 BITBUCKET_APP_PASSWORD = os.getenv("BITBUCKET_APP_PASSWORD")  # (=기존 BITBUCKET_AUTH_TOKEN)
 
+
+# 한글·유니코드 사용자 이름도 지원하는 Basic Auth 헤더 생성 함수
+def build_basic_auth_header(username: str, password: str) -> str:
+    token_bytes = f"{username}:{password}".encode("utf-8")
+    b64_token = base64.b64encode(token_bytes).decode("ascii")
+    return f"Basic {b64_token}"
+
+
 def add_pr_comment(workspace, repo_slug, pr_id, comment):
     """PR에 코멘트를 추가하는 함수"""
     logger.info(f"Env BITBUCKET_AUTH_TOKEN exists? {bool(os.getenv('BITBUCKET_AUTH_TOKEN'))}")
-    if not BITBUCKET_AUTH_TOKEN:
-        logger.error("Bitbucket authentication token not found")
+    if not (BITBUCKET_USERNAME and BITBUCKET_APP_PASSWORD):
+        logger.error("Bitbucket authentication credentials not found")
         return False
 
     url = f"{BITBUCKET_API_URL}/repositories/{workspace}/{repo_slug}/pullrequests/{pr_id}/comments"
+    headers = {
+        "Authorization": build_basic_auth_header(BITBUCKET_USERNAME, BITBUCKET_APP_PASSWORD),
+        "Content-Type": "application/json"
+    }
     try:
         res = requests.post(
             url,
-            auth=(BITBUCKET_USERNAME, BITBUCKET_APP_PASSWORD),  # ← 이것만 있으면 Basic 헤더 자동 생성
+            headers=headers,
             json={"content": {"raw": comment}},
             timeout=10
         )
