@@ -31,7 +31,7 @@ USER_MESSAGES = {
 
 # PR 코멘트 설정
 PR_COMMENTS = {
-    "default": "@coderabbitbot full review",
+    "default": "@CodeRabbit full review",
 }
 
 BITBUCKET_USERNAME = os.getenv("BITBUCKET_USERNAME")        # .env에 추가
@@ -60,7 +60,7 @@ def add_pr_comment(workspace, repo_slug, pr_id, comment):
         res = requests.post(
             url,
             headers=headers,
-            json={"content": {"raw": comment}},
+            json={"content": {"raw": "@codeRabbit full review", "markup": "markdown"}},
             timeout=10
         )
         res.raise_for_status()
