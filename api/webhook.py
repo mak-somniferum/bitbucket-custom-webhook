@@ -48,7 +48,7 @@ def build_basic_auth_header(username: str, password: str) -> str:
 
 def add_pr_comment(workspace, repo_slug, pr_id, comment):
     """PR에 코멘트를 추가하는 함수"""
-    logger.info(f"Env BITBUCKET_AUTH_TOKEN exists? {bool(os.getenv('BITBUCKET_AUTH_TOKEN'))}")
+    logger.info(f"Env BITBUCKET_APP_PASSWORD exists? {bool(os.getenv('BITBUCKET_APP_PASSWORD'))}")
     if not (BITBUCKET_USERNAME and BITBUCKET_APP_PASSWORD):
         logger.error("Bitbucket authentication credentials not found")
         return False
