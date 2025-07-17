@@ -62,7 +62,7 @@ def add_pr_comment(workspace, repo_slug, pr_id, comment):
             headers=headers,
             json={
                 "content": {
-                    "raw": f"<@CodeRabbit> full review {comment}",
+                    "raw": f"@{712020:b486d9e0-cb42-427e-be16-9cdb6284476a} full review {comment}",
                 }
             },
             timeout=10
