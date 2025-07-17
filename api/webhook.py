@@ -30,9 +30,9 @@ USER_MESSAGES = {
 }
 
 # PR 코멘트 설정
-PR_COMMENTS = {
-    "default": "@CodeRabbit full review",
-}
+# PR_COMMENTS = {
+#     "default": "@codeRabbit full review",
+# }
 
 BITBUCKET_USERNAME = os.getenv("BITBUCKET_USERNAME")        # .env에 추가
 BITBUCKET_APP_PASSWORD = os.getenv("BITBUCKET_APP_PASSWORD")  # (=기존 BITBUCKET_AUTH_TOKEN)
@@ -45,7 +45,7 @@ def build_basic_auth_header(username: str, password: str) -> str:
     return f"Basic {b64_token}"
 
 
-def add_pr_comment(workspace, repo_slug, pr_id, comment):
+def add_pr_comment(workspace, repo_slug, pr_id):
     """PR에 코멘트를 추가하는 함수"""   
     if not (BITBUCKET_USERNAME and BITBUCKET_APP_PASSWORD):
         logger.error("Bitbucket authentication credentials not found")
@@ -103,10 +103,10 @@ def webhook():
             
             # PR 작성자에 따른 맞춤 코멘트 선택
             # PR 작성자와 무관하게 고정 메시지 사용
-            comment = PR_COMMENTS["default"]
+            # comment = PR_COMMENTS["default"]
             
             # PR에 코멘트 추가
-            if add_pr_comment(workspace, repo_slug, pr_id, comment):
+            if add_pr_comment(workspace, repo_slug, pr_id):
                 logger.info(f"Successfully added comment to PR #{pr_id}")
             else:
                 logger.error(f"Failed to add comment to PR #{pr_id}")
