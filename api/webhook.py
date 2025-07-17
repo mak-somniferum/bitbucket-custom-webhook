@@ -34,6 +34,9 @@ PR_COMMENTS = {
     "suhjin700": "코드 리뷰 시작하겠습니다. 👀"
 }
 
+BITBUCKET_USERNAME = os.getenv("BITBUCKET_USERNAME")        # .env에 추가
+BITBUCKET_APP_PASSWORD = os.getenv("BITBUCKET_APP_PASSWORD")  # (=기존 BITBUCKET_AUTH_TOKEN)
+
 def add_pr_comment(workspace, repo_slug, pr_id, comment):
     """PR에 코멘트를 추가하는 함수"""
     logger.info(f"Env BITBUCKET_AUTH_TOKEN exists? {bool(os.getenv('BITBUCKET_AUTH_TOKEN'))}")
@@ -42,17 +45,17 @@ def add_pr_comment(workspace, repo_slug, pr_id, comment):
         return False
 
     url = f"{BITBUCKET_API_URL}/repositories/{workspace}/{repo_slug}/pullrequests/{pr_id}/comments"
-    headers = {
-        "Authorization": f"Basic {BITBUCKET_AUTH_TOKEN}",
-        "Content-Type": "application/json"
-    }
-    
     try:
-        response = requests.post(url, headers=headers, json={"content": {"raw": comment}})
-        response.raise_for_status()
+        res = requests.post(
+            url,
+            auth=(BITBUCKET_USERNAME, BITBUCKET_APP_PASSWORD),  # ← 이것만 있으면 Basic 헤더 자동 생성
+            json={"content": {"raw": comment}},
+            timeout=10
+        )
+        res.raise_for_status()
         return True
     except Exception as e:
-        logger.error(f"Error adding PR comment: {str(e)}")
+        logger.error(f"Error adding PR comment: {e}")
         return False
 
 @app.route("/webhook", methods=["POST"])
